@@ -3,3 +3,15 @@ GET http://localhost:8000/api/v1
 
 # ==========Admin API
 ###POST NEW ADMIN USER
+POST http://localhost:8000/api/v1/admin-user
+Content-Type: application/json
+
+{
+    "fName":"Dipu",
+    "lName":"Dangol",
+    "email":"d@ad.com",
+    "password":"123456",
+    "phone":"1234567789",
+    "address":"sydney",
+    "dob":"2020-8-18"
+}
