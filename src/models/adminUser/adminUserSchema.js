@@ -48,6 +48,10 @@ const adminUserSchema = new mongoose.Schema({
         default: null
 
     },
+    emailValidationCode: {
+        type: String,
+        default: "",
+    }
 },
     {
         timestamps: true,
