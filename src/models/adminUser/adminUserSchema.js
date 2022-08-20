@@ -31,6 +31,12 @@ const adminUserSchema = new mongoose.Schema({
         maxLength: [200, "password name can't be longer than 20 characters"]
 
     },
+    confirmPassword: {
+        type: String,
+        required: true,
+        maxLength: [200, "password name can't be longer than 20 characters"]
+
+    },
     phone: {
         type: String,
         required: true,

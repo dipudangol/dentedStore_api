@@ -32,7 +32,7 @@ router.post("/", newAdminUserValidation, async (req, res, next) => {
         if (user?.id) {
             res.json({
                 status: "success",
-                message: "User added"
+                message: "User added, go to mail to check verify the email"
             });
 
             const url = `${process.env.ROOT_DOMAIN}/admin/verify-email?

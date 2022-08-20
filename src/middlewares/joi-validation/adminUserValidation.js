@@ -8,6 +8,7 @@ export const newAdminUserValidation = (req, res, next) => {
             lName: Joi.string().max(20).required(),
             email: Joi.string().email({ minDomainSegments: 2 }),
             password: Joi.string().max(200).required(),
+            confirmPassword: Joi.string().max(200).required(),
             phone: Joi.string().max(20).required(),
             address: Joi.string().max(100),
             dob: Joi.date(),
