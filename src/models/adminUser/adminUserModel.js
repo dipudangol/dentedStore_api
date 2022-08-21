@@ -6,4 +6,13 @@ export const insertAdminUser = obj => {
 
 }
 
+//update user to active, filter should be object
+export const updateOneUser = (filter, update) => {
+    return adminUserSchema.findOneAndUpdate(filter, update, { new: true });
+}
+
+//find user 
+export const findOneAdminUser = (filter) => {
+    return adminUserSchema.findOne(filter);
+};
 

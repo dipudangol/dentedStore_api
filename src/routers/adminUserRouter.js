@@ -1,9 +1,9 @@
 import express from 'express';
-import { hassPassword } from '../helpers/bcryptHelper.js';
-import { newAdminUserValidation } from '../middlewares/joi-validation/adminUserValidation.js';
-import { insertAdminUser } from '../models/adminUser/adminUserModel.js';
+import { comparePassword, hassPassword } from '../helpers/bcryptHelper.js';
+import { emailVerificationValidation, loginValidation, newAdminUserValidation } from '../middlewares/joi-validation/adminUserValidation.js';
+import { findOneAdminUser, insertAdminUser, updateOneUser } from '../models/adminUser/adminUserModel.js';
 import { v4 as uuidv4 } from "uuid";
-import { verificationEmail } from '../helpers/emailHelper.js';
+import { userVerifiedNotification, verificationEmail } from '../helpers/emailHelper.js';
 
 const router = express.Router();
 
@@ -32,16 +32,15 @@ router.post("/", newAdminUserValidation, async (req, res, next) => {
         if (user?.id) {
             res.json({
                 status: "success",
-                message: "User added, go to mail to check verify the email"
+                message: "User added, go to mail to  verify the email"
             });
 
-            const url = `${process.env.ROOT_DOMAIN}/admin/verify-email?
-            c=${user.emailValidationCode}&e=${user.email}`;
+            const url = `${process.env.ROOT_DOMAIN}/admin/verify-email?c=${user.emailValidationCode}&e=${user.email}`;
             //send mail
             verificationEmail({
-                fName:user.fName,
-                lName:user.lName,
-                email:user.email,
+                fName: user.fName,
+                lName: user.lName,
+                email: user.email,
                 url,
             })
 
@@ -59,14 +58,94 @@ router.post("/", newAdminUserValidation, async (req, res, next) => {
         next(error);
     }
 })
-router.patch("/verify-email", (req, res, next) => {
+
+//TO VERIFY THE Email 
+router.patch("/verify-email", emailVerificationValidation, async (req, res, next) => {
     try {
-        console.log(req.body);
+        const { email, emailValidationCode } = req.body;
+
+        const user = await updateOneUser({
+            emailValidationCode,
+            email,
+        },
+            {
+                status: "active",
+                emailValidationCode: "",
+            })
+
+        user?._id ?
+            res.json({
+                status: "success",
+                message: "Account been verified, you can login now"
+
+            }) && userVerifiedNotification(user)
+            : res.json({
+                status: "error",
+                message: "invalid or expire link, no action was taken"
+
+            })
+
 
         res.json({
             status: "success",
             message: "Todo verify new user email"
         });
+    } catch (error) {
+        next(error);
+    }
+})
+
+
+
+//To post a user
+router.post("/login", loginValidation, async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await findOneAdminUser({ email });
+
+
+        if (user?._id) {
+            if (user?.status !== "active") {
+                return res.json({
+                    status: "error",
+                    message: "Account not verified, check and verify it again"
+                })
+            }
+            const isMatched = comparePassword(password, user.password)
+            if (isMatched) {
+                return res.json({
+                    status: "success",
+                    message: "Logged in Successfully!",
+                    user
+                })
+            }
+        }
+        res.json({
+            status: "error",
+            message: "Invalid login credentials"
+
+        })
+
+
+
+        // user?._id ?
+        //     res.json({
+        //         status: "success",
+        //         message: "Account been verified, you can login now"
+
+        //     })&& userVerifiedNotification(user)
+        //     : res.json({
+        //         status: "error",
+        //         message: "invalid or expire link, no action was taken"
+
+        //     })
+
+
+        // res.json({
+        //     status: "success",
+        //     message: "Todo verify new user email"
+        // });
     } catch (error) {
         next(error);
     }

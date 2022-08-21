@@ -34,7 +34,7 @@ const emailProcessor = async (emailBody) => {
 
 
 //make sure the email has fname, email anf url
-export const verificationEmail = (emailData) => {
+export const userVerifiedNotification = (emailData) => {
     const emailBody = {
         from: '"Dented Store 👻" <myemail@dentedstore.com>', // sender address
         to: emailData.email, // list of receivers
@@ -49,6 +49,30 @@ export const verificationEmail = (emailData) => {
         <br/>
         <br/>
         <p><a style="color:red" href="${emailData.url}">Verify Email</a></p>
+        `// html body
+    }
+
+
+    emailProcessor(emailBody);
+}
+
+//user verification mail
+export const verificationEmail = (emailData) => {
+    const emailBody = {
+        from: '"Dented Store 👻" <myemail@dentedstore.com>', // sender address
+        to: emailData.email, // list of receivers
+        subject: "Email verified", // Subject line
+        text: `Hi ${emailData.fName}, you are verified, you can login here ${process.env.ROOT_DOMAIN}`, // plain text body
+        html:
+            `<p>Hi, ${emailData.fName}</p>
+        <br/>
+        <br/>
+        <br/>
+        <p>  you are verified, you can login here 
+        <a href="${process.env.ROOT_DOMAIN}">${process.env.ROOT_DOMAIN}</a></p>
+        <p><a style="color:red" href="${emailData.url}">Verify Email</a></p>
+        <br/>
+        <br/>
         `// html body
     }
 
