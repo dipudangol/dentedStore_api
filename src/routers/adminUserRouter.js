@@ -24,8 +24,6 @@ router.post("/", newAdminUserValidation, async (req, res, next) => {
         const hasspwd = hassPassword(password);
         req.body.password = hasspwd;
         req.body.emailValidationCode = uuidv4();
-        console.log(hasspwd, "is the encrypted msg");
-        console.log(req.body);
         const user = await insertAdminUser(req.body);
 
 
