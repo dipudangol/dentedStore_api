@@ -4,7 +4,7 @@ import { emailVerificationValidation, loginValidation, newAdminUserValidation } 
 import { findOneAdminUser, insertAdminUser, updateOneUser } from '../models/adminUser/adminUserModel.js';
 import { v4 as uuidv4 } from "uuid";
 import { userVerifiedNotification, verificationEmail } from '../helpers/emailHelper.js';
-import { signAccessJWT } from '../helpers/jwtHelper.js';
+import { createJWTS, signAccessJWT } from '../helpers/jwtHelper.js';
 
 const router = express.Router();
 
@@ -116,12 +116,12 @@ router.post("/login", loginValidation, async (req, res, next) => {
 
 
                 //jwt
-                const jwts = await  signAccessJWT({ email });
+                const jwts = await  createJWTS({ email });
                 return res.json({
                     status: "success",
                     message: "Logged in Successfully!",
                     user,
-                    jwts
+                    ...jwts
                 })
             }
         }

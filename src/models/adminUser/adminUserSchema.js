@@ -57,7 +57,12 @@ const adminUserSchema = new mongoose.Schema({
     emailValidationCode: {
         type: String,
         default: "",
-    }
+    },
+    // refreshJWT:{
+    //     type:String,
+    //     default:"",
+    // }
+
 },
     {
         timestamps: true,
