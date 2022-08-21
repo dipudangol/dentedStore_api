@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { updateOneUser } from "../models/adminUser/adminUserModel.js";
 import { insertSession } from "../models/adminUser/session/sessionModel.js";
 
 
@@ -16,3 +17,22 @@ export const signAccessJWT = async (payload) => {
     return accessJWT;
 };
 
+
+
+export const signRefreshJWT = async (payload) => {
+    const refreshJWT = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
+        expiresIn: "30d"
+    });
+
+    await updateOneUser(payload, { refreshJWT })
+
+    return refreshJWT;
+};
+
+
+export const createJWTS = async (payload) => {
+    return {
+        accessJWT: await signAccessJWT(payload),
+        refreshJWT: await signRefreshJWT(payload),
+    }
+}
