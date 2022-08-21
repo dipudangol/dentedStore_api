@@ -13,6 +13,8 @@ export const SHORTSTR = Joi.string().max(100);
 export const LONGSTR = Joi.string().max(5000);
 
 
+
+
 export const validator = (schema, req, res, next) => {
     const { error } = schema.validate(req.body);
     if (error) {

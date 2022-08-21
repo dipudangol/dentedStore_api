@@ -4,6 +4,7 @@ import { emailVerificationValidation, loginValidation, newAdminUserValidation } 
 import { findOneAdminUser, insertAdminUser, updateOneUser } from '../models/adminUser/adminUserModel.js';
 import { v4 as uuidv4 } from "uuid";
 import { userVerifiedNotification, verificationEmail } from '../helpers/emailHelper.js';
+import { signAccessJWT } from '../helpers/jwtHelper.js';
 
 const router = express.Router();
 
@@ -102,7 +103,6 @@ router.post("/login", loginValidation, async (req, res, next) => {
 
         const user = await findOneAdminUser({ email });
 
-
         if (user?._id) {
             if (user?.status !== "active") {
                 return res.json({
@@ -112,10 +112,16 @@ router.post("/login", loginValidation, async (req, res, next) => {
             }
             const isMatched = comparePassword(password, user.password)
             if (isMatched) {
+                user.password='';
+
+
+                //jwt
+                const jwts = await  signAccessJWT({ email });
                 return res.json({
                     status: "success",
                     message: "Logged in Successfully!",
-                    user
+                    user,
+                    jwts
                 })
             }
         }
@@ -125,25 +131,6 @@ router.post("/login", loginValidation, async (req, res, next) => {
 
         })
 
-
-
-        // user?._id ?
-        //     res.json({
-        //         status: "success",
-        //         message: "Account been verified, you can login now"
-
-        //     })&& userVerifiedNotification(user)
-        //     : res.json({
-        //         status: "error",
-        //         message: "invalid or expire link, no action was taken"
-
-        //     })
-
-
-        // res.json({
-        //     status: "success",
-        //     message: "Todo verify new user email"
-        // });
     } catch (error) {
         next(error);
     }
