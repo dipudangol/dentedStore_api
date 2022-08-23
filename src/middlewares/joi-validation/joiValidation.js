@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { ADDRESS, DATE, EMAIL, FNAME, LNAME, PASSWORD, PHONE, SHORTSTR, validator } from "../constant.js";
+import { ADDRESS, DATE, EMAIL, FNAME, LNAME, PASSWORD, PHONE, SHORTSTR, STATUS, validator } from "../constant.js";
 
 export const newAdminUserValidation = (req, res, next) => {
     //define rule
@@ -37,3 +37,18 @@ export const loginValidation = (req, res, next) => {
     })
     validator(schema, req, res, next);
 }
+
+
+//ServeSide category validation
+export const newCategoryValidation = (req, res, next) => {
+    req.body.parentId = req.body.parentId ? req.body.parentId : null;
+    //define rule
+    const schema = Joi.object({
+        status: STATUS,
+        name: SHORTSTR.required(),
+        parentId: SHORTSTR.allow(null, ""),
+        slug: SHORTSTR,
+    })
+    validator(schema, req, res, next);
+}
+

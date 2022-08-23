@@ -1,10 +1,11 @@
 import express from 'express';
 import { comparePassword, hassPassword } from '../helpers/bcryptHelper.js';
-import { emailVerificationValidation, loginValidation, newAdminUserValidation } from '../middlewares/joi-validation/adminUserValidation.js';
+import { emailVerificationValidation, loginValidation, newAdminUserValidation } from '../middlewares/joi-validation/joiValidation.js';
 import { findOneAdminUser, insertAdminUser, updateOneUser } from '../models/adminUser/adminUserModel.js';
 import { v4 as uuidv4 } from "uuid";
 import { userVerifiedNotification, verificationEmail } from '../helpers/emailHelper.js';
 import { createJWTS, signAccessJWT } from '../helpers/jwtHelper.js';
+
 
 const router = express.Router();
 
