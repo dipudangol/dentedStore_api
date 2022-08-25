@@ -1,8 +1,27 @@
 import express from 'express';
 import { newCategoryValidation } from '../middlewares/joi-validation/joiValidation.js';
-import { insertCategory } from '../models/category/categoryModel.js';
+import { getAllCategory, getCategoryById, insertCategory } from '../models/category/categoryModel.js';
 import slugify from "slugify";
 const router = express.Router();
+
+//get categories
+router.get("/:_id?", async (req, res, next) => {
+    try {
+        const { _id } = req.params;
+        const categories = _id
+            ? await getCategoryById(_id)
+            : await getAllCategory();
+
+        res.json({
+            status: "success",
+            message: "category list",
+            categories,
+        });
+    } catch (error) {
+        error.status = 500
+        next(error)
+    }
+})
 
 
 //insert new categories
