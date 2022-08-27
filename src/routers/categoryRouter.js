@@ -1,6 +1,6 @@
 import express from 'express';
-import { newCategoryValidation } from '../middlewares/joi-validation/joiValidation.js';
-import { getAllCategory, getCategoryById, insertCategory } from '../models/category/categoryModel.js';
+import { newCategoryValidation, updateCategoryValidation } from '../middlewares/joi-validation/joiValidation.js';
+import { deleteCategoryById, getAllCategory, getCategoryById, hasChildCategoryById, insertCategory, updateCategoryById } from '../models/category/categoryModel.js';
 import slugify from "slugify";
 const router = express.Router();
 
@@ -55,6 +55,68 @@ router.post("/", newCategoryValidation, async (req, res, next) => {
     } catch (error) {
         next(error)
     }
+})
+
+
+//update categories
+router.put("/", updateCategoryValidation, async (req, res, next) => {
+    try {
+        const hasChildcats = await hasChildCategoryById(req.body._id);
+        if (hasChildcats) {
+            return res.json({
+                status: "error",
+                message: "Already has child, can't relocate either delete or reassign"
+            })
+        }
+        console.log(req.body);
+        const catUpdate = await updateCategoryById(req.body);
+        catUpdate?._id ?
+            res.json({
+                status: "success",
+                message: "updated categories",
+            }) :
+            res.json({
+                status: "error",
+                message: "unable to update the category, please try again",
+            })
+
+    } catch (error) {
+        next(error)
+
+    }
+})
+
+//to deltet router
+router.delete("/:id", async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        const hasChildCats = await hasChildCategoryById(req.params.id);
+        if (hasChildCats) {
+            return res.json({
+                status: "error",
+                message:
+                    "This category has child categories, pelase delete or re assign them to another category befor taking this action.",
+            });
+        }
+
+        const catDelete = await deleteCategoryById(id);
+
+        catDelete?._id
+            ? res.json({
+                status: "success",
+                message: "Category has been Deleted.",
+            })
+            : res.json({
+                status: "error",
+                message: "Unablel to Delete the category, Please try again later.",
+            });
+
+    } catch (error) {
+        next(error);
+
+    }
+
 })
 
 export default router;

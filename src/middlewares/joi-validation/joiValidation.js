@@ -39,7 +39,7 @@ export const loginValidation = (req, res, next) => {
 }
 
 
-//ServeSide category validation
+//ServeSide category validation=============================
 export const newCategoryValidation = (req, res, next) => {
     req.body.parentId = req.body.parentId ? req.body.parentId : null;
     //define rule
@@ -52,3 +52,15 @@ export const newCategoryValidation = (req, res, next) => {
     validator(schema, req, res, next);
 }
 
+
+
+export const updateCategoryValidation = (req, res, next) => {
+    req.body.parentId = req.body.parentId ? req.body.parentId : null;
+    const schema = Joi.object({
+        status: STATUS,
+        name: SHORTSTR.required(),
+        parentId: SHORTSTR.allow(null, ""),
+        _id:SHORTSTR.required(),
+    })
+    validator(schema, req, res, next);
+}

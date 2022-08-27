@@ -25,6 +25,10 @@ const catSchema = new mongoose.Schema({
         default: null
     },
 
+
+}, {
+
+    timestamps: true,
 },
 );
 

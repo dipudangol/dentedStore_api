@@ -26,7 +26,7 @@ app.use("/api/v1/category", categoryRouter);
 app.get("/", (req, res) => {
     res.json({
         message: "In the main page "
-    });
+    }); 
 });
 
 

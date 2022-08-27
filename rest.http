@@ -38,12 +38,15 @@ POST http://localhost:8000/api/v1/category
 Content-Type: application/json
 
 {
-    "status":"active",
-    "name":"macs macbook",
-    "parentId":"63053099f4d3a3cd3f8539c5"
+    "status":"inactive",
+    "name":"Books fiction",
+    "parentId":"6307d13a003890def15f5c64"
 
 }
 
 ###get categoies
 
 GET http://localhost:8000/api/v1/category/630530e2f4d3a3cd3f8539c9
+
+###delete categories
+DELETE http://localhost:8000/api/v1/category/630530c9f4d3a3cd3f8539c7
