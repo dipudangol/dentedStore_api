@@ -3,6 +3,7 @@ import express from 'express';
 const app = express();
 import cors from "cors";
 import helmet from "helmet";
+import {adminAuth} from './src/middlewares/auth-middleware/authMiddleware.js'
 
 const PORT = process.env.PORT || 8000;
 
@@ -20,13 +21,13 @@ import adminUserRouter from './src/routers/adminUserRouter.js';
 import categoryRouter from './src/routers/categoryRouter.js';
 
 app.use("/api/v1/admin-user", adminUserRouter);
-app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/category", adminAuth, categoryRouter);
 
 
 app.get("/", (req, res) => {
     res.json({
         message: "In the main page "
-    }); 
+    });
 });
 
 

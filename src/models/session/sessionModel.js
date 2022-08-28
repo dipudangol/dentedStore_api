@@ -5,6 +5,12 @@ export const insertSession = (obj) => {
 }
 
 
+//filter should be object
+export const getSession=(filter)=>{
+    return sessionSchema.findOne(filter);
+}
 
-
-
+//delete seesion
+export const deleteSession=(filter)=>{
+    return sessionSchema.findOneAndDelete(filter);
+}

@@ -32,8 +32,12 @@ Content-Type: application/json
 
 }
 
+###get new accessJWT
+GET  http://localhost:8000/api/v1/admin-user/accessjwt
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFhc3NAZC5jb20iLCJpYXQiOjE2NjE3MTU3NDEsImV4cCI6MTY2NDMwNzc0MX0.z26geOzJT5ZKWw-pKXZz22LO0ITT18hF1IWu_r9Gcao
 
-###====categories apis
+
+###====categories apis===================================
 POST http://localhost:8000/api/v1/category
 Content-Type: application/json
 
@@ -46,7 +50,8 @@ Content-Type: application/json
 
 ###get categoies
 
-GET http://localhost:8000/api/v1/category/630530e2f4d3a3cd3f8539c9
+GET http://localhost:8000/api/v1/category
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFAZGRkLmNvbSIsImlhdCI6MTY2MTYzOTk4NCwiZXhwIjoxNjYxNjQwODg0fQ.luodQ6AtrJvkmR8ASLIA41amtXjOSp3RhCJDIvVxQfY
 
 ###delete categories
 DELETE http://localhost:8000/api/v1/category/630530c9f4d3a3cd3f8539c7

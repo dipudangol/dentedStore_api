@@ -68,7 +68,6 @@ router.put("/", updateCategoryValidation, async (req, res, next) => {
                 message: "Already has child, can't relocate either delete or reassign"
             })
         }
-        console.log(req.body);
         const catUpdate = await updateCategoryById(req.body);
         catUpdate?._id ?
             res.json({
