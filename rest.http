@@ -55,3 +55,36 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFAZGRkLmNvbSIs
 
 ###delete categories
 DELETE http://localhost:8000/api/v1/category/630530c9f4d3a3cd3f8539c7
+
+
+###==============================payment================================
+GET http://localhost:8000/api/v1/payment-method
+
+###post payment
+POST http://localhost:8000/api/v1/payment-method
+Content-Type: application/json
+
+{
+    
+    "status": "active",
+    "name": "pay by cash or eftpos",
+    "description": "follow instruction as given"
+}
+
+
+
+###update payment
+PUT http://localhost:8000/api/v1/payment-method
+Content-Type: application/json
+
+{
+    "_id":"630d1d189850df4d462d2ae2",
+    "status": "active",
+    "name": "pay by PAYID",
+    "description": "follow instruction as given"
+}
+
+
+###delete payment
+DELETE http://localhost:8000/api/v1/payment-method/630d1ea8c4086107e7cae4f4
+
