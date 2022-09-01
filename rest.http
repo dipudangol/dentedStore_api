@@ -84,7 +84,26 @@ Content-Type: application/json
     "description": "follow instruction as given"
 }
 
-
 ###delete payment
 DELETE http://localhost:8000/api/v1/payment-method/630d1ea8c4086107e7cae4f4
 
+
+
+### ======================================================Product apis======================================================
+GET http://localhost:8000/api/v1/product
+
+        
+### post product
+POST http://localhost:8000/api/v1/product
+Content-Type: application/json
+
+{
+    "name":"macbook pro",
+    "sku":"mac-14",
+    "description":"some detail about products",
+    "qty":100,
+    "price":3000,
+    "salesPrice":0,
+    "salesStartDate":null,
+    "salesEndDate":null
+}

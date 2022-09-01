@@ -26,7 +26,7 @@ router.post("/", newPaymentMethodValidation, async (req, res, next) => {
         const pm = await insertPaymentMethod(req.body);
         pm?._id ? res.json({
             status: "success",
-            message: "todo post method"
+            message: "The payment has been added"
         }) : res.json({
             status: "error",
             message: "error found"
@@ -72,7 +72,7 @@ router.delete("/:_id", async (req, res, next) => {
 
         pm?._id ? res.json({
             status: "success",
-            message: "The paymenr has been deleted"
+            message: "The payment has been deleted"
         }) : res.json({
             status: "error",
             message: "error unable to delete payment method, try again"

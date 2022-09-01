@@ -89,3 +89,14 @@ export const updatePaymentMethodValidation = (req, res, next) => {
     validator(schema, req, res, next);
 }
 
+
+// ===============product method validation
+export const newProductValidation = (req, res, next) => {
+    const schema = Joi.object({
+        _id: SHORTSTR.required(),
+        status: STATUS.required(),
+        name: SHORTSTR.required(),
+        description: SHORTSTR.required(),
+    })
+    validator(schema, req, res, next);
+}
