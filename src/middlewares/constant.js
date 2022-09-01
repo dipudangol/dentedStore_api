@@ -12,6 +12,7 @@ export const DATE = Joi.date();
 
 export const SHORTSTR = Joi.string().max(100);
 export const LONGSTR = Joi.string().max(5000);
+export const NUMBER= Joi.number();
 
 
 

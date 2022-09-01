@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { ADDRESS, DATE, EMAIL, FNAME, LNAME, PASSWORD, PHONE, SHORTSTR, STATUS, validator } from "../constant.js";
+import { ADDRESS, DATE, EMAIL, FNAME, LNAME, LONGSTR, NUMBER, PASSWORD, PHONE, SHORTSTR, STATUS, validator } from "../constant.js";
 
 export const newAdminUserValidation = (req, res, next) => {
     //define rule
@@ -92,11 +92,18 @@ export const updatePaymentMethodValidation = (req, res, next) => {
 
 // ===============product method validation
 export const newProductValidation = (req, res, next) => {
+
     const schema = Joi.object({
-        _id: SHORTSTR.required(),
-        status: STATUS.required(),
         name: SHORTSTR.required(),
-        description: SHORTSTR.required(),
+        sku: SHORTSTR.required(),
+        description: LONGSTR.required(),
+        qty: NUMBER.required(),
+        price: NUMBER.required(),
+        salesPrice: NUMBER,
+        salesStartDate: DATE.allow(null),
+        salesEndDate: DATE.allow(null),
+        catId: SHORTSTR.required(),
     })
     validator(schema, req, res, next);
+
 }

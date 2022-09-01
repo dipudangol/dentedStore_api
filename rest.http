@@ -98,12 +98,13 @@ POST http://localhost:8000/api/v1/product
 Content-Type: application/json
 
 {
-    "name":"macbook pro",
-    "sku":"mac-14",
+    "name":"laptop",
+    "sku":"smac-1s4",
     "description":"some detail about products",
     "qty":100,
     "price":3000,
     "salesPrice":0,
     "salesStartDate":null,
-    "salesEndDate":null
+    "salesEndDate":null,
+    "catId":"63053099f4d3a3cd3f8539c5"
 }
