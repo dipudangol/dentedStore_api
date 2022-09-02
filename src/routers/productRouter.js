@@ -2,9 +2,25 @@ import express from 'express';
 import { newProductValidation } from '../middlewares/joi-validation/joiValidation.js';
 import { addProduct, getAllProducts } from '../models/product/ProductModel.js';
 import slugify from "slugify";
+import multer from 'multer';
 
 
 const router = express.Router();
+
+//setup multer for validation
+const fileUploadDestination = "public/img/products"
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        let error = null
+        //validation test if needed
+        cb(error, fileUploadDestination);
+    },
+    filename: (req, file, cb) => {
+        const fullFileName = Date.now() + "-" + file.originalname;
+        cb(null, fullFileName);
+    },
+})
+const upload = multer({ storage });
 
 router.get("/", async (req, res, next) => {
     try {
@@ -22,9 +38,15 @@ router.get("/", async (req, res, next) => {
 
 
 
-router.post("/", newProductValidation, async (req, res, next) => {
+router.post("/", upload.array('images'), newProductValidation, async (req, res, next) => {
     try {
-        console.log(req.body);
+        if (req.files.length) {
+
+            const images = req.files.map(img => img.path.slice(6));
+            console.log(images);
+            req.body.images = images;
+            req.body.thumbnail = images[0];
+        }
         const sluge = slugify(req.body.name, { lower: true })
         req.body.slug = sluge;
         const result = await addProduct(req.body);
@@ -39,8 +61,30 @@ router.post("/", newProductValidation, async (req, res, next) => {
             });
 
     } catch (error) {
-        next(error);
+        if (error.message.includes("E11000 duplicate key error collection")) {
+            error.message = "This product has already been added"
+            // error.status = 200
+        }
+        // error.status = 500
+        next(error)
+
     }
 });
+
+
+
+
+router.delete("/:id", (req, res, next) => {
+    try {
+        // deleting image from disk not for getProductsAction
+        const { _id } = req.params;
+        const imgToDelete = req.body;
+
+    } catch (error) {
+        error.status = 500;
+        next(error)
+
+    }
+})
 
 export default router;

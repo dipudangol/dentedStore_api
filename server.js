@@ -3,7 +3,8 @@ import express from 'express';
 const app = express();
 import cors from "cors";
 import helmet from "helmet";
-import { adminAuth } from './src/middlewares/auth-middleware/authMiddleware.js'
+import { adminAuth } from './src/middlewares/auth-middleware/authMiddleware.js';
+import path from 'path';
 
 const PORT = process.env.PORT || 8000;
 
@@ -15,6 +16,11 @@ dbConnection();
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
+
+
+// serve static files
+const __dirname = path.resolve()
+app.use(express.static(path.join(__dirname, "public")));
 
 //api calls
 import adminUserRouter from './src/routers/adminUserRouter.js';

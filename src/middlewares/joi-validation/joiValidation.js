@@ -92,8 +92,14 @@ export const updatePaymentMethodValidation = (req, res, next) => {
 
 // ===============product method validation
 export const newProductValidation = (req, res, next) => {
+    const { salesEndDate, salesPrice, salesStartDate } = req.body;
+
+    req.body.salesPrice = salesPrice ? salesPrice : 0;
+    req.body.salesStartDate = !salesStartDate || salesStartDate === 'null' ? null : salesStartDate;
+    req.body.salesEndDate = !salesEndDate || salesEndDate === 'null' ? null : salesEndDate;
 
     const schema = Joi.object({
+        status: STATUS.required(),
         name: SHORTSTR.required(),
         sku: SHORTSTR.required(),
         description: LONGSTR.required(),
