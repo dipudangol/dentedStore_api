@@ -5,7 +5,7 @@ import { deleteSession, insertSession } from "../models/session/sessionModel.js"
 
 export const signAccessJWT = async (payload) => {
     const accessJWT = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
-        expiresIn: "15m"
+        expiresIn: "30m"
     });
 
     const obj = {
