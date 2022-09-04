@@ -14,7 +14,11 @@ dbConnection();
 
 //middleware
 app.use(cors());
-app.use(helmet());
+app.use(helmet({
+    crossOriginResourcePolicy: {
+        useDefaults: false,
+    }
+}));
 app.use(express.json());
 
 

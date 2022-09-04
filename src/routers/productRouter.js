@@ -1,9 +1,10 @@
 import express from 'express';
 import { newProductValidation } from '../middlewares/joi-validation/joiValidation.js';
-import { addProduct, getAllProducts } from '../models/product/ProductModel.js';
+import { addProduct, deleteProductById, getAllProducts, getProductById } from '../models/product/ProductModel.js';
 import slugify from "slugify";
 import multer from 'multer';
-
+import fs from "fs";
+import path from 'path';
 
 const router = express.Router();
 
@@ -22,9 +23,10 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage });
 
-router.get("/", async (req, res, next) => {
+router.get("/:_id?", async (req, res, next) => {
     try {
-        const products = await getAllProducts();
+        const { _id } = req.params;
+        const products = _id ? await getProductById(_id) : await getAllProducts();
         res.json({
             status: "success",
             message: "todo get method",
@@ -47,7 +49,7 @@ router.post("/", upload.array('images'), newProductValidation, async (req, res, 
             req.body.images = images;
             req.body.thumbnail = images[0];
         }
-        const sluge = slugify(req.body.name, { lower: true })
+        const sluge = slugify(req.body.name, { lower: true, trim: true })
         req.body.slug = sluge;
         const result = await addProduct(req.body);
         result?._id
@@ -74,11 +76,26 @@ router.post("/", upload.array('images'), newProductValidation, async (req, res, 
 
 
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:_id", async (req, res, next) => {
     try {
         // deleting image from disk not for getProductsAction
         const { _id } = req.params;
         const imgToDelete = req.body;
+        console.log(_id, req.body,  "from router page");  
+        const product = await deleteProductById(_id);
+        if (imgToDelete.lengeth) {
+            const arg =  imgToDelete.split(",")
+            console.log(arg)
+            arg.map((item) => item && fs.unlinkSync(path.join("./public", item)));
+        }
+        product?._id ? res.json({
+            status: "success",
+            message: "Successfully deleted",
+        })
+            : res.json({
+                status: "error",
+                message: "error, unable to delete product",
+            })
 
     } catch (error) {
         error.status = 500;

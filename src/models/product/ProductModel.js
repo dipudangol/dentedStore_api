@@ -4,6 +4,10 @@ export const getAllProducts = () => {
     return productSchema.find();
 };
 
+export const getProductById = (_id) => {
+    return productSchema.findById(_id);
+};
+
 //filter should be objects
 export const getSelectedProducts = (filter) => {
     return productSchema.find(filter);
