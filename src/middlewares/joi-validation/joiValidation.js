@@ -18,6 +18,22 @@ export const newAdminUserValidation = (req, res, next) => {
     validator(schema, req, res, next);
 }
 
+//updatinf admin user validattion
+export const updateAdminUserValidation = (req, res, next) => {
+    //define rule
+    const schema = Joi.object({
+        _id: SHORTSTR.required(),
+        fName: FNAME.required(),
+        lName: LNAME.required(),
+        confirmPassword: PASSWORD,
+        phone: PHONE,
+        address: ADDRESS,
+        dob: DATE.allow("", null),
+    });
+
+    //implement value to schema
+    validator(schema, req, res, next);
+}
 
 export const emailVerificationValidation = (req, res, next) => {
     //define rule

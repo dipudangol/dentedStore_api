@@ -1,6 +1,6 @@
 import express from 'express';
 import { comparePassword, hassPassword } from '../helpers/bcryptHelper.js';
-import { emailVerificationValidation, loginValidation, newAdminUserValidation } from '../middlewares/joi-validation/joiValidation.js';
+import { emailVerificationValidation, loginValidation, newAdminUserValidation, updateAdminUserValidation } from '../middlewares/joi-validation/joiValidation.js';
 import { findOneAdminUser, insertAdminUser, updateOneUser } from '../models/adminUser/adminUserModel.js';
 import { v4 as uuidv4 } from "uuid";
 import { userVerifiedNotification, verificationEmail } from '../helpers/emailHelper.js';
@@ -72,6 +72,26 @@ router.post("/", adminAuth, newAdminUserValidation, async (req, res, next) => {
             error.message = "There is already user with this email, change it"
         }
         next(error);
+    }
+})
+
+
+//update user profile
+router.put("/", adminAuth, updateAdminUserValidation, async (req, res, next) => {
+    try {
+        const { _id, ...rest } = req.body;
+        const result = await updateOneUser({ _id }, rest);
+        result?.id ? res.json({
+            status: "success",
+            message: "User is updated",
+        }): res.json({
+            status: "error",
+            message: "unable to update profile",
+        })
+
+    } catch (error) {
+        next(error)
+
     }
 })
 
