@@ -1,6 +1,6 @@
 import express from 'express';
-import { newProductValidation } from '../middlewares/joi-validation/joiValidation.js';
-import { addProduct, deleteProductById, getAllProducts, getProductById } from '../models/product/ProductModel.js';
+import { newProductValidation, updateProductValidation } from '../middlewares/joi-validation/joiValidation.js';
+import { addProduct, deleteProductById, getAllProducts, getProductById, updateProductById } from '../models/product/ProductModel.js';
 import slugify from "slugify";
 import multer from 'multer';
 import fs from "fs";
@@ -22,6 +22,7 @@ const storage = multer.diskStorage({
     },
 })
 const upload = multer({ storage });
+
 
 router.get("/:_id?", async (req, res, next) => {
     try {
@@ -75,16 +76,52 @@ router.post("/", upload.array('images'), newProductValidation, async (req, res, 
 
 
 
+router.put("/", upload.array('newImages'), updateProductValidation, async (req, res, next) => {
+    try {
+        // console.log(req.body);
+        const { body, files } = req;
+        let { images, imgToDelete } = body;
+        images = images.split(",");
+        imgToDelete = imgToDelete.split(",");
+        images = images.filter((img) => !imgToDelete.includes(img));
+        console.log(images, "from to delete");
+
+        if (files) {
+            const newImgs = files.map((imgObj) => imgObj.path.slice(6))
+            images = [...images, ...newImgs];
+        }
+
+        body.images = images;
+        console.log(body.images)
+        const product = await updateProductById(body);
+        product?.id ?
+            res.json({
+                status: "success",
+                message: "Product is updated"
+            }) :
+            res.json({
+                status: "error",
+                message: "Error is ",
+
+            })
+
+    } catch (error) {
+        error.status = 500;
+        next(error);
+    }
+});
+
+
 
 router.delete("/:_id", async (req, res, next) => {
     try {
         // deleting image from disk not for getProductsAction
         const { _id } = req.params;
         const imgToDelete = req.body;
-        console.log(_id, req.body,  "from router page");  
+        console.log(_id, req.body, "from router page");
         const product = await deleteProductById(_id);
         if (imgToDelete.lengeth) {
-            const arg =  imgToDelete.split(",")
+            const arg = imgToDelete.split(",")
             console.log(arg)
             arg.map((item) => item && fs.unlinkSync(path.join("./public", item)));
         }
