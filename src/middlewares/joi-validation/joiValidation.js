@@ -35,6 +35,21 @@ export const updateAdminUserValidation = (req, res, next) => {
     validator(schema, req, res, next);
 }
 
+
+//updatinf admin user validattion
+export const updateAdminPasswordValidation = (req, res, next) => {
+    //define rule
+    const schema = Joi.object({
+        _id: SHORTSTR.required(),
+        password: SHORTSTR.required(),
+        newPassword: SHORTSTR.required(),
+
+    });
+
+    //implement value to schema
+    validator(schema, req, res, next);
+}
+
 export const emailVerificationValidation = (req, res, next) => {
     //define rule
     const schema = Joi.object({
@@ -134,7 +149,7 @@ export const newProductValidation = (req, res, next) => {
 
 // ===============product method validation
 export const updateProductValidation = (req, res, next) => {
-    const { salesEndDate, salesPrice, salesStartDate,imgToDelete } = req.body;
+    const { salesEndDate, salesPrice, salesStartDate, imgToDelete } = req.body;
 
     req.body.salesPrice = salesPrice ? salesPrice : 0;
     req.body.salesStartDate = !salesStartDate || salesStartDate === 'null' ? null : salesStartDate;

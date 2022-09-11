@@ -1,6 +1,6 @@
 import express from 'express';
 import { comparePassword, hassPassword } from '../helpers/bcryptHelper.js';
-import { emailVerificationValidation, loginValidation, newAdminUserValidation, updateAdminUserValidation } from '../middlewares/joi-validation/joiValidation.js';
+import { emailVerificationValidation, loginValidation, newAdminUserValidation, updateAdminPasswordValidation, updateAdminUserValidation } from '../middlewares/joi-validation/joiValidation.js';
 import { findOneAdminUser, insertAdminUser, updateOneUser } from '../models/adminUser/adminUserModel.js';
 import { v4 as uuidv4 } from "uuid";
 import { userVerifiedNotification, verificationEmail } from '../helpers/emailHelper.js';
@@ -23,6 +23,8 @@ const router = express.Router();
 router.get("/", adminAuth, (req, res, next) => {
     try {
         const user = req.adminInfo;
+        user.password = undefined;
+        user.refreshJWT = undefined;
         res.json({
             status: "success",
             message: "todo",
@@ -84,7 +86,7 @@ router.put("/", adminAuth, updateAdminUserValidation, async (req, res, next) => 
         result?.id ? res.json({
             status: "success",
             message: "User is updated",
-        }): res.json({
+        }) : res.json({
             status: "error",
             message: "unable to update profile",
         })
@@ -131,7 +133,52 @@ router.patch("/verify-email", emailVerificationValidation, async (req, res, next
     }
 })
 
+//update password from user profile
+router.patch("/", adminAuth, updateAdminPasswordValidation, async (req, res, next) => {
+    try {
 
+        const { password, _id, newPassword } = req.body;
+        //check if it is valid
+        //encrypt new passsword
+        //update pswd in db
+        console.log(req.body);
+        const userId = req.adminInfo._id.toString();
+        if (_id != userId) {
+            return res.status(401).json({
+                status: "Error",
+                message: "Invalid user request",
+            });
+        }
+
+        const passFromdb = req.adminInfo.password;
+        const isMatched = comparePassword(password, passFromdb);
+        console.log(password, passFromdb, isMatched);
+
+        if (isMatched) {
+            const hasedPassword = hassPassword(newPassword);
+            const result = await updateOneUser(
+                { _id },
+                {
+                    password: hasedPassword,
+                }
+            );
+            if (result?._id) {
+                return res.json({
+                    status: "success",
+                    message: "pasword has been updated successfully!",
+                });
+            }
+        }
+
+
+        res.json({
+            status: "error",
+            message: "unable to update password, try again",
+        })
+    } catch (error) {
+        next(error);
+    }
+})
 
 //To post a user
 router.post("/login", loginValidation, async (req, res, next) => {
