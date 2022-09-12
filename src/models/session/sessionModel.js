@@ -1,9 +1,9 @@
 import sessionSchema from './sessionSchema.js';
 
-export const insertSession = (obj) => {
+export const insertSession  = (obj) => {
     return sessionSchema(obj).save();
 }
-
+  
 
 //filter should be object
 export const getSession=(filter)=>{

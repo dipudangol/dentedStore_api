@@ -21,6 +21,14 @@ Content-Type: application/json
 ### http://localhost:3000/admin/verifyemail?c=sasas&e=asasas
 
 
+### request otp for psd reset
+POST http://localhost:8000/api/v1/admin-user/request-password-reset-otp
+Content-Type: application/json
+
+{
+    "email":"a@d.com"
+}
+
 
 ### admin user, login 
 POST http://localhost:8000/api/v1/admin-user/login

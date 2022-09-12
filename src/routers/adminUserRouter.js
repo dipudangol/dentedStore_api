@@ -3,11 +3,13 @@ import { comparePassword, hassPassword } from '../helpers/bcryptHelper.js';
 import { emailVerificationValidation, loginValidation, newAdminUserValidation, updateAdminPasswordValidation, updateAdminUserValidation } from '../middlewares/joi-validation/joiValidation.js';
 import { findOneAdminUser, insertAdminUser, updateOneUser } from '../models/adminUser/adminUserModel.js';
 import { v4 as uuidv4 } from "uuid";
-import { userVerifiedNotification, verificationEmail } from '../helpers/emailHelper.js';
+import { otpNotification, userVerifiedNotification, verificationEmail } from '../helpers/emailHelper.js';
 import { createJWTS, signAccessJWT, verifyRefreshJWT } from '../helpers/jwtHelper.js';
 import { adminAuth } from '../middlewares/auth-middleware/authMiddleware.js';
 import { decode } from 'jsonwebtoken';
+import { createOTP } from '../utils/randomGenerator.js';
 
+import { insertSession } from "../models/session/sessionModel.js";
 
 const router = express.Router();
 
@@ -253,4 +255,42 @@ router.get("/accessjwt", async (req, res, next) => {
     }
 })
 
+
+//password reset as logged out user
+router.post("/request-password-reset-otp", async (req, res, next) => {
+    try {
+        const { email } = req.body;
+        if (email.includes("@")) {
+            const user = await findOneAdminUser({ email });
+            //check if user exists
+            if (user?._id) {
+                //create unique code and store in data with email
+                const otp = createOTP();
+                const obj = {
+                    token: createOTP(),
+                    associate: email,
+                    type: "updatePassword",
+                }
+                //create unique link for the frontend that takes to updating user pswd
+                const result = await insertSession(obj);
+                if (result?._id) {
+                    console.log(result)
+                    otpNotification({
+                        otp: result.token,
+                        fName: result.associate,
+                        email,
+                    });
+                }
+            }
+        }
+
+        //email the link to the client
+        res.json({
+            status: "success",
+            message: "If the email exist in out system, we will send OTP to the email",
+        });
+    } catch (error) {
+        next(error);
+    }
+})
 export default router;

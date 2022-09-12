@@ -56,6 +56,7 @@ export const userVerifiedNotification = (emailData) => {
     emailProcessor(emailBody);
 }
 
+
 //user verification mail
 export const verificationEmail = (emailData) => {
     const emailBody = {
@@ -73,6 +74,32 @@ export const verificationEmail = (emailData) => {
         <p><a style="color:red" href="${emailData.url}">Verify Email</a></p>
         <br/>
         <br/>
+        `// html body
+    }
+
+
+    emailProcessor(emailBody);
+}
+
+
+//send otp to the user email
+
+export const otpNotification = (emailData) => {
+    const emailBody = {
+        from: '"Dented Store 👻" <myemail@dentedstore.com>', // sender address
+        to: emailData.email, // list of receivers
+        subject: "OTP for passwprd reset", // Subject line
+        text: `Hi ${emailData.fName}, Please follow the link to reset password: ${emailData.otp} `, // plain text body
+        html:
+            `<p>Hi, ${emailData.fName}</p>
+            <p> your otp is ${emailData.otp}</p>
+        <br/>
+        <br/>
+        <br/>
+        <p> Please follow the link to reset your password</p>
+        <br/>
+        <br/>
+        <p><a style="color:red" href="${emailData.otp}">Reset Password</a></p>
         `// html body
     }
 
