@@ -1,6 +1,6 @@
 import express from 'express';
 import { comparePassword, hassPassword } from '../helpers/bcryptHelper.js';
-import { emailVerificationValidation, loginValidation, newAdminUserValidation, updateAdminPasswordValidation, updateAdminUserValidation } from '../middlewares/joi-validation/joiValidation.js';
+import { emailVerificationValidation, loginValidation, newAdminUserValidation, resetAdminPasswordValidation, updateAdminPasswordValidation, updateAdminUserValidation } from '../middlewares/joi-validation/joiValidation.js';
 import { findOneAdminUser, insertAdminUser, updateOneUser } from '../models/adminUser/adminUserModel.js';
 import { v4 as uuidv4 } from "uuid";
 import { otpNotification, userVerifiedNotification, verificationEmail } from '../helpers/emailHelper.js';
@@ -9,7 +9,7 @@ import { adminAuth } from '../middlewares/auth-middleware/authMiddleware.js';
 import { decode } from 'jsonwebtoken';
 import { createOTP } from '../utils/randomGenerator.js';
 
-import { insertSession } from "../models/session/sessionModel.js";
+import { deleteSession, insertSession } from "../models/session/sessionModel.js";
 
 const router = express.Router();
 
@@ -256,7 +256,7 @@ router.get("/accessjwt", async (req, res, next) => {
 })
 
 
-//password reset as logged out user
+//password reset to get otp as logged out user
 router.post("/request-password-reset-otp", async (req, res, next) => {
     try {
         const { email } = req.body;
@@ -288,6 +288,45 @@ router.post("/request-password-reset-otp", async (req, res, next) => {
         res.json({
             status: "success",
             message: "If the email exist in out system, we will send OTP to the email",
+        });
+    } catch (error) {
+        next(error);
+    }
+})
+
+
+//password reset as logged out user
+router.patch("/reset-password", resetAdminPasswordValidation, async (req, res, next) => {
+    try {
+        const { email, otp, password } = req.body;
+
+        console.log(req.body);
+        //email the link to the client
+        const filter = {
+            token: otp,
+            associate: email,
+            type: "updatePassword"
+        }
+        //check user in table and delete
+        const result = await deleteSession(filter);
+
+        console.log(filter, result, "from delete admin router")
+
+        //if delete succeed, encrpt password and update in table 
+        if (result?._id) {
+            const encrypted = hassPassword(password);
+            const user = await updateOneUser({ email }, { password: encrypted });
+            if (user?._id) {
+                return res.json({
+                    status: "success",
+                    message: "The password has been updated!",
+                });
+            }
+        }
+
+        res.json({
+            status: "error",
+            message: "invalid request",
         });
     } catch (error) {
         next(error);

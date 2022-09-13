@@ -36,13 +36,27 @@ export const updateAdminUserValidation = (req, res, next) => {
 }
 
 
-//updatinf admin user validattion
+//updating admin password user validattion
 export const updateAdminPasswordValidation = (req, res, next) => {
     //define rule
     const schema = Joi.object({
         _id: SHORTSTR.required(),
         password: SHORTSTR.required(),
         newPassword: SHORTSTR.required(),
+
+    });
+
+    //implement value to schema
+    validator(schema, req, res, next);
+}
+
+//reseting the password of admin validation logged out
+export const resetAdminPasswordValidation = (req, res, next) => {
+    //define rule
+    const schema = Joi.object({
+        email: EMAIL.required(),
+        password: SHORTSTR.required(),
+        otp: NUMBER.required(),
 
     });
 
