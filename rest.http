@@ -116,3 +116,18 @@ Content-Type: application/json
     "salesEndDate":null,
     "catId":"63053099f4d3a3cd3f8539c5"
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+###==========================oder api================
+GET  http://localhost:8000/api/v1/order/11

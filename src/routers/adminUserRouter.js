@@ -274,7 +274,6 @@ router.post("/request-password-reset-otp", async (req, res, next) => {
                 //create unique link for the frontend that takes to updating user pswd
                 const result = await insertSession(obj);
                 if (result?._id) {
-                    console.log(result)
                     otpNotification({
                         otp: result.token,
                         fName: result.associate,
@@ -309,9 +308,6 @@ router.patch("/reset-password", resetAdminPasswordValidation, async (req, res, n
         }
         //check user in table and delete
         const result = await deleteSession(filter);
-
-        console.log(filter, result, "from delete admin router")
-
         //if delete succeed, encrpt password and update in table 
         if (result?._id) {
             const encrypted = hassPassword(password);
