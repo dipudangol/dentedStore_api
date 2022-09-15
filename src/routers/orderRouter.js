@@ -559,7 +559,7 @@ router.get("/:_id?", (req, res, next) => {
             orders,
         })
     } catch (error) {
-        next(eror);
+        next(error);
     }
 })
 

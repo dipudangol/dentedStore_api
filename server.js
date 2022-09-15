@@ -28,17 +28,21 @@ import categoryRouter from './src/routers/categoryRouter.js';
 import paymentMethodRouter from './src/routers/paymentMethodRouter.js';
 import productRouter from './src/routers/productRouter.js';
 import orderRouter from './src/routers/orderRouter.js';
+import reviewRouter from './src/routers/reviewRouter.js';
+import userRouter from './src/routers/userRouter.js';
 
 
 app.use("/api/v1/admin-user", adminUserRouter);
 app.use("/api/v1/category", adminAuth, categoryRouter);
 app.use("/api/v1/payment-method", adminAuth, paymentMethodRouter);
-app.use("/api/v1/product", productRouter);
-app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/product", adminAuth, productRouter);
+app.use("/api/v1/order", adminAuth, orderRouter);
+app.use("/api/v1/reviews", adminAuth, reviewRouter);
+app.use("/api/v1/users", adminAuth, userRouter);
 
 app.get("/", (req, res) => {
     res.json({
-        message: "In the main page "
+        message: "In the main page"
     });
 });
 
