@@ -17,5 +17,10 @@ export const findOneAdminUser = (filter) => {
     return adminUserSchema.findOne(filter);
 };
 
+//find all admin user 
+export const findAdminUser = () => {
+    return adminUserSchema.find();
+};
+
 
 

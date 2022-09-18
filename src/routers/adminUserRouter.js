@@ -1,7 +1,7 @@
 import express from 'express';
 import { comparePassword, hassPassword } from '../helpers/bcryptHelper.js';
 import { emailVerificationValidation, loginValidation, newAdminUserValidation, resetAdminPasswordValidation, updateAdminPasswordValidation, updateAdminUserValidation } from '../middlewares/joi-validation/joiValidation.js';
-import { findOneAdminUser, insertAdminUser, updateOneUser } from '../models/adminUser/adminUserModel.js';
+import { findAdminUser, findOneAdminUser, insertAdminUser, updateOneUser } from '../models/adminUser/adminUserModel.js';
 import { v4 as uuidv4 } from "uuid";
 import { otpNotification, userVerifiedNotification, verificationEmail } from '../helpers/emailHelper.js';
 import { createJWTS, signAccessJWT, verifyRefreshJWT } from '../helpers/jwtHelper.js';
@@ -37,6 +37,22 @@ router.get("/", adminAuth, (req, res, next) => {
         next(error);
     }
 })
+
+
+//get all admin-users
+router.get("/all-admin", adminAuth, async (req, res, next) => {
+    try {
+        const users = await findAdminUser();
+        res.json({
+            status: "success",
+            message: "todo",
+            users,
+        });
+
+    } catch (error) {
+        next(error);
+    }
+});
 
 
 router.post("/", adminAuth, newAdminUserValidation, async (req, res, next) => {
@@ -324,6 +340,20 @@ router.patch("/reset-password", resetAdminPasswordValidation, async (req, res, n
             status: "error",
             message: "invalid request",
         });
+    } catch (error) {
+        next(error);
+    }
+})
+
+
+
+router.delete("/:_id", async (req, res, next) => {
+    try {
+        const { _id } = req.params
+        const isUser = await find();
+
+        if(user.length)
+
     } catch (error) {
         next(error);
     }
