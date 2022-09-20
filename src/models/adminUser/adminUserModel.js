@@ -24,3 +24,9 @@ export const findAdminUser = () => {
 
 
 
+//find one and delete admin users 
+export const DeleteAdminUser = (_id) => {
+    return adminUserSchema.findByIdAndDelete(_id);
+};
+
+

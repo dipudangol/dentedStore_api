@@ -1,7 +1,7 @@
 import express from 'express';
 import { comparePassword, hassPassword } from '../helpers/bcryptHelper.js';
 import { emailVerificationValidation, loginValidation, newAdminUserValidation, resetAdminPasswordValidation, updateAdminPasswordValidation, updateAdminUserValidation } from '../middlewares/joi-validation/joiValidation.js';
-import { findAdminUser, findOneAdminUser, insertAdminUser, updateOneUser } from '../models/adminUser/adminUserModel.js';
+import { DeleteAdminUser, findAdminUser, findOneAdminUser, insertAdminUser, updateOneUser } from '../models/adminUser/adminUserModel.js';
 import { v4 as uuidv4 } from "uuid";
 import { otpNotification, userVerifiedNotification, verificationEmail } from '../helpers/emailHelper.js';
 import { createJWTS, signAccessJWT, verifyRefreshJWT } from '../helpers/jwtHelper.js';
@@ -350,11 +350,28 @@ router.patch("/reset-password", resetAdminPasswordValidation, async (req, res, n
 router.delete("/:_id", async (req, res, next) => {
     try {
         const { _id } = req.params
-        const isUser = await find();
+        const isUser = await findAdminUser();
 
-        if(user.length)
+        if (isUser.length <= 1) {
+            return res.json({
+                status: "error",
+                message: "Sorry, the last admin user can't be deleted",
+            })
 
-    } catch (error) {
+        }
+        const deletedUser = await DeleteAdminUser(_id)
+        if (deletedUser?._id) {
+            return res.json({
+                status: "success",
+                message: "The user has been deleted"
+            });
+        }
+        res.json({
+            status: "error",
+            message: "Error, something wrong, try again, later"
+        });
+    }
+    catch (error) {
         next(error);
     }
 })
