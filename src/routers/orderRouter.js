@@ -55,8 +55,206 @@ const ordersArg = [
         }
     },
     {
-        _id: "1",
+        _id: "11",
         status: "processing",
+        buyer: {
+            buyerId: "asasas",
+            fName: "Dipu",
+            lName: "asas",
+            email: "a@a.com",
+            phone: "12345678",
+        },
+        cart: [
+            {
+                productId: "asas",
+                productName: "asas",
+                salesPrice: 100,
+                qty: 123,
+                thumbnail: "http://asa",
+                subTotal: 12300,
+            },
+            {
+                productId: "asas",
+                productName: "asas",
+                salesPrice: 100,
+                qty: 13,
+                thumbnail: "http://asa",
+                subTotal: 1300,
+            },
+        ],
+        shipping: {
+            fName: "asas",
+            lName: "asas",
+            phone: 1234,
+            street: "10 campsie street",
+            suburb: "sydney",
+            postcode: 1234,
+            state: "NSW",
+            country: "australia",
+        },
+        cartTotal: 450,
+        discount: 50,
+        discountCode: "asass",
+        totalAmount: 400,
+        paymentInfo: {
+            status: "paid",
+            method: "cash",
+            paidAmount: 400,
+            transactionId: "asas",
+            paidDate: "2020-1-12"
+        }
+    },{
+        _id: "11",
+        status: "processing",
+        buyer: {
+            buyerId: "asasas",
+            fName: "Dipu",
+            lName: "asas",
+            email: "a@a.com",
+            phone: "12345678",
+        },
+        cart: [
+            {
+                productId: "asas",
+                productName: "asas",
+                salesPrice: 100,
+                qty: 123,
+                thumbnail: "http://asa",
+                subTotal: 12300,
+            },
+            {
+                productId: "asas",
+                productName: "asas",
+                salesPrice: 100,
+                qty: 13,
+                thumbnail: "http://asa",
+                subTotal: 1300,
+            },
+        ],
+        shipping: {
+            fName: "asas",
+            lName: "asas",
+            phone: 1234,
+            street: "10 campsie street",
+            suburb: "sydney",
+            postcode: 1234,
+            state: "NSW",
+            country: "australia",
+        },
+        cartTotal: 450,
+        discount: 50,
+        discountCode: "asass",
+        totalAmount: 400,
+        paymentInfo: {
+            status: "paid",
+            method: "cash",
+            paidAmount: 400,
+            transactionId: "asas",
+            paidDate: "2020-1-12"
+        }
+    },
+    {
+        _id: "1",
+        status: "cancelled",
+        buyer: {
+            buyerId: "asasas",
+            fName: "Dipu",
+            lName: "asas",
+            email: "a@a.com",
+            phone: "12345678",
+        },
+        cart: [
+            {
+                productId: "asas",
+                productName: "asas",
+                salesPrice: 100,
+                qty: 123,
+                thumbnail: "http://asa",
+                subTotal: 12300,
+            },
+            {
+                productId: "asas",
+                productName: "asas",
+                salesPrice: 100,
+                qty: 13,
+                thumbnail: "http://asa",
+                subTotal: 1300,
+            },
+        ],
+        shipping: {
+            fName: "asas",
+            lName: "asas",
+            phone: 1234,
+            street: "10 campsie street",
+            suburb: "sydney",
+            postcode: 1234,
+            state: "NSW",
+            country: "australia",
+        },
+        cartTotal: 450,
+        discount: 50,
+        discountCode: "asass",
+        totalAmount: 400,
+        paymentInfo: {
+            status: "paid",
+            method: "cash",
+            paidAmount: 400,
+            transactionId: "asas",
+            paidDate: "2020-1-12"
+        }
+    },
+    {
+        _id: "11",
+        status: "shipped",
+        buyer: {
+            buyerId: "asasas",
+            fName: "Dipu",
+            lName: "asas",
+            email: "a@a.com",
+            phone: "12345678",
+        },
+        cart: [
+            {
+                productId: "asas",
+                productName: "asas",
+                salesPrice: 100,
+                qty: 123,
+                thumbnail: "http://asa",
+                subTotal: 12300,
+            },
+            {
+                productId: "asas",
+                productName: "asas",
+                salesPrice: 100,
+                qty: 13,
+                thumbnail: "http://asa",
+                subTotal: 1300,
+            },
+        ],
+        shipping: {
+            fName: "asas",
+            lName: "asas",
+            phone: 1234,
+            street: "10 campsie street",
+            suburb: "sydney",
+            postcode: 1234,
+            state: "NSW",
+            country: "australia",
+        },
+        cartTotal: 450,
+        discount: 50,
+        discountCode: "asass",
+        totalAmount: 400,
+        paymentInfo: {
+            status: "paid",
+            method: "cash",
+            paidAmount: 400,
+            transactionId: "asas",
+            paidDate: "2020-1-12"
+        }
+    },  {
+        _id: "1",
+        status: "shipped",
         buyer: {
             buyerId: "asasas",
             fName: "Dipu",
@@ -105,7 +303,7 @@ const ordersArg = [
         }
     }, {
         _id: "1",
-        status: "processing",
+        status: "shipped",
         buyer: {
             buyerId: "asasas",
             fName: "Dipu",
@@ -154,7 +352,7 @@ const ordersArg = [
         }
     }, {
         _id: "1",
-        status: "processing",
+        status: "shipped",
         buyer: {
             buyerId: "asasas",
             fName: "Dipu",
@@ -203,7 +401,7 @@ const ordersArg = [
         }
     }, {
         _id: "1",
-        status: "processing",
+        status: "shipped",
         buyer: {
             buyerId: "asasas",
             fName: "Dipu",
@@ -252,7 +450,7 @@ const ordersArg = [
         }
     }, {
         _id: "1",
-        status: "processing",
+        status: "shipped",
         buyer: {
             buyerId: "asasas",
             fName: "Dipu",
@@ -301,7 +499,7 @@ const ordersArg = [
         }
     }, {
         _id: "1",
-        status: "processing",
+        status: "shipped",
         buyer: {
             buyerId: "asasas",
             fName: "Dipu",
@@ -350,7 +548,7 @@ const ordersArg = [
         }
     }, {
         _id: "1",
-        status: "processing",
+        status: "shipped",
         buyer: {
             buyerId: "asasas",
             fName: "Dipu",
@@ -399,7 +597,7 @@ const ordersArg = [
         }
     }, {
         _id: "1",
-        status: "processing",
+        status: "shipped",
         buyer: {
             buyerId: "asasas",
             fName: "Dipu",
@@ -448,7 +646,7 @@ const ordersArg = [
         }
     }, {
         _id: "1",
-        status: "processing",
+        status: "cancelled",
         buyer: {
             buyerId: "asasas",
             fName: "Dipu",
